@@ -1,0 +1,6 @@
+# fish
+fishd.*
+
+# nvim
+nvim/null
+.netrwhist
