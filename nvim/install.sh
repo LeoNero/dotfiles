@@ -4,12 +4,12 @@ set -e
 
 if ! command -v pip3 > /dev/null; then
   echo Installing pip3
-  pacman -S install pip3
+  pacman -S pip3
 fi
 
 if ! command -v nvim > /dev/null; then
   echo Installing neovim
-  pacman -S install neovim
+  pacman -S neovim
   pip3 install neovim
 fi
 
