@@ -4,7 +4,7 @@ set -e
 
 if ! command -v pip3 > /dev/null; then
   echo Installing pip3
-  pacman -S pip3
+  pacman -S python-pip
 fi
 
 if ! command -v nvim > /dev/null; then
