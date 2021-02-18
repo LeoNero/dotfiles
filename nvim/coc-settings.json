@@ -1,0 +1,30 @@
+{
+  "languageserver": {
+    "cmake": {
+      "command": "cmake-language-server",
+      "filetypes": ["cmake"],
+      "rootPatterns": [
+        "build/"
+      ],
+      "initializationOptions": {
+        "buildDirectory": "build"
+      }
+    },
+    "ocaml": {
+      "command": "opam",
+      "args": ["config", "exec", "--", "ocaml-language-server", "--stdio"],
+      "filetypes": ["ocaml", "reason"]
+    },
+    "efm": {
+      "command": "efm-langserver",
+      // custom config path
+      "args": ["-c", "/home/nerone/.config/efm-langserver/config.yaml"],
+      "filetypes": ["vim", "markdown"]
+    },
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": ["go.mod", ".git/", ".hg/"],
+      "filetypes": ["go"]
+    }
+  }
+}
