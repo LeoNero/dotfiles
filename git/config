@@ -1,0 +1,17 @@
+[user]
+	email = leofnerone@proton.me
+	name = Leo Nerone
+[core]
+	editor = nvim
+	excludesfile = /Users/nerone/.config/git/.gitignore_global
+	autocrlf = input
+[commit]
+	template = /Users/nerone/.config/git/.gitmessage.txt
+[fetch]
+	prune = true
+[init]
+	defaultBranch = main
+[alias]
+	cm = commit
+	i = init
+	cl = clone

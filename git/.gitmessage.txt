@@ -1,0 +1,6 @@
+<fix|feat|build|ci|docs|perf|refactor|style|test>[(optional scope)][!]: <description>
+
+[optional body]
+
+[BREAKING CHANGE:]
+[optional footer(s)]
