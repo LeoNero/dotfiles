@@ -2,6 +2,8 @@ if status is-interactive
     # Commands to run in interactive sessions can go here
 end
 
+set -g fish_greeting "Hi Leo :)"
+
 # tabtab source for packages
 # uninstall by removing these lines
 [ -f ~/.config/tabtab/__tabtab.fish ]; and . ~/.config/tabtab/__tabtab.fish; or true
