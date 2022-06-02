@@ -4,7 +4,7 @@ local map = vim.keymap.set
 vim.g.mapleader = " "
 
 -- change localleader key to \
-vim.g.maplocalleader = "\\"
+vim.g.maplocalleader = [[\]]
 
 local nop = '<nop>'
 
@@ -36,7 +36,6 @@ map('n', '<leader>tp', function() vim.api.nvim_command('tabprevious') end, { des
 map('n', '<leader>bt', function() vim.api.nvim_command('enew') end, { desc = 'Creates a new buffer' })
 map('n', '<leader>bn', function() vim.api.nvim_command('bn') end, { desc = 'Goes to next buffer' })
 map('n', '<leader>bp', function() vim.api.nvim_command('bp') end, { desc = 'Goes to previous buffer' })
-map('n', '<leader>bc', function() vim.api.nvim_command('bd') end, { desc = 'Closes current buffer' })
 
 -- create splits
 map('n', '<leader>ss', '<c-w>s', { desc = 'Creates horizontal split' })
@@ -83,11 +82,6 @@ map('n', 'zO', 'zR', { desc = 'Opens all folds' })
 map('n', 'zC', 'zM', { desc = 'Closes all folds' })
 map('n', 'zc', 'zc', { desc = 'Closes current fold' })
 map('n', 'zf', 'mzzMzvzz', { desc = 'Closes all folds except the current one' })
-
--- terminal mode
--- TODO needs improvements
-map('t', 'jk', "<c-\\><c-n>", { desc = 'Exits terminal mode' })
-map('n', '<leader>ot', function() vim.api.nvim_command('edit term://fish') end, { desc = 'Opens terminal in current window' })
 
 -- wow very magic search
 map('n', '/', '/\\v', { desc = 'wow so much magic search' })

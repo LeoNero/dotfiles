@@ -1,10 +1,25 @@
---[[
-vim.g.tokyodark_color_gamma = "1.3"
-vim.cmd[[colorscheme tokyodark]]
+--[[ vim.g.tokyonight_style = 'storm'
+vim.cmd [[colorscheme tokyonight]]
 --]]
 
---[[
-vim.cmd[[colorscheme dracula]]
---]]
+local catppuccin = require("catppuccin")
 
-vim.cmd[[colorscheme tokyonight]]
+catppuccin.setup {
+    integrations = {
+        nvimtree = {
+            enabled = true,
+            show_root = true,
+        },
+        lsp_saga = true,
+        lsp_trouble = true,
+        which_key = true,
+        indent_blankline = {
+            enabled = true,
+        },
+        neogit = true,
+        ts_rainbow = true,
+    }
+}
+
+vim.g.catppuccin_flavour = "macchiato" -- frappe and macchiato are my favorites
+vim.cmd[[colorscheme catppuccin]]

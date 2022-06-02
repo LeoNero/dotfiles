@@ -1,8 +1,5 @@
 local tree = require('nvim-tree')
 
-vim.g.nvim_tree_git_hl = 1
-vim.g.nvim_tree_highlight_opened_files = 1
-
 tree.setup {
     open_on_setup = true,
     open_on_setup_file = true,
@@ -17,8 +14,12 @@ tree.setup {
     actions = {
         open_file = {
             resize_window = true
-        }
-    }
+        },
+    },
+    renderer = {
+        highlight_opened_files = "all",
+        highlight_git = true,
+    },
 }
 
 vim.keymap.set('n', '<leader>2', function()

@@ -1,0 +1,12 @@
+[selene]
+base = "lua52"
+name = "nvim"
+
+[vim]
+any = true
+
+[MiniTrailspace]
+any = true
+
+[MiniBufremove]
+any = true
