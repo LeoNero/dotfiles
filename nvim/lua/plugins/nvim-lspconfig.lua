@@ -150,10 +150,28 @@ vim.api.nvim_create_autocmd({ 'BufWritePost', 'BufWinEnter' }, {
     end
 })
 
+
+local bulb = require 'nvim-lightbulb'
+local show_lightbulb = true
+map('n', '<leader>db', function()
+    if show_lightbulb then
+        bulb.update_lightbulb({ sign = { enabled = false } })
+        show_lightbulb = false
+
+        local line = vim.api.nvim_win_get_cursor(0)[1]
+        local buffer_name = vim.api.nvim_buf_get_name(0)
+        vim.fn.sign_unplace('nvim-lightbulb', { id = line, buffer = buffer_name })
+    else
+        bulb.update_lightbulb({ sign = { enabled = true } })
+        show_lightbulb = true
+    end
+end, { desc = 'Toggles code action lightbulb ' })
 vim.api.nvim_create_autocmd('CursorMoved', {
     pattern = '*',
     callback = function()
-        require('nvim-lightbulb').update_lightbulb()
+        if show_lightbulb then
+            bulb.update_lightbulb()
+        end
     end
 })
 
