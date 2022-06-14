@@ -64,7 +64,6 @@ local servers = {
     'rescriptls',
     'rnix',
     -- 'rome',
-    'rust_analyzer',
     'solc',
     'stylelint_lsp',
     'sumneko_lua',
@@ -95,17 +94,37 @@ local telescope = require 'telescope.builtin'
 map('n', 'gr', function() telescope.lsp_references() end, { desc = 'Go to references' })
 
 for _, lsp in pairs(servers) do
-    lspconfig[lsp].setup {
-        on_attach = function(client)
-            require 'illuminate'.on_attach(client)
+    if lsp == 'hls' then
+        lspconfig[lsp].setup {
+            on_attach = function(client)
+                require 'illuminate'.on_attach(client)
 
-            map('n', 'gd', function() vim.lsp.buf.definition() end, { buffer = true, desc = 'Go to definition' })
-            map('n', 'gD', function() vim.lsp.buf.declaration() end, { buffer = true, desc = 'Go to declaration' })
-            map('n', 'K', function() vim.lsp.buf.hover() end, { buffer = true, desc = 'Hover to get info' })
-            map('n', 'gi', function() vim.lsp.buf.implementation() end, { buffer = true, desc = 'Go to implementation' })
-        end,
-        capabilities = capabilities
-    }
+                map('n', 'gd', function() vim.lsp.buf.definition() end, { buffer = true, desc = 'Go to definition' })
+                map('n', 'gD', function() vim.lsp.buf.declaration() end, { buffer = true, desc = 'Go to declaration' })
+                map('n', 'K', function() vim.lsp.buf.hover() end, { buffer = true, desc = 'Hover to get info' })
+                map('n', 'gi', function() vim.lsp.buf.implementation() end, { buffer = true, desc = 'Go to implementation' })
+            end,
+            capabilities = capabilities,
+            settings = {
+                haskell = {
+                    hlintOn = true,
+                }
+            }
+        }
+    else
+        lspconfig[lsp].setup {
+            on_attach = function(client)
+                require 'illuminate'.on_attach(client)
+
+                map('n', 'gd', function() vim.lsp.buf.definition() end, { buffer = true, desc = 'Go to definition' })
+                map('n', 'gD', function() vim.lsp.buf.declaration() end, { buffer = true, desc = 'Go to declaration' })
+                map('n', 'K', function() vim.lsp.buf.hover() end, { buffer = true, desc = 'Hover to get info' })
+                map('n', 'gi', function() vim.lsp.buf.implementation() end, { buffer = true, desc = 'Go to implementation' })
+            end,
+            capabilities = capabilities
+        }
+    end
+
 end
 
 lspconfig.sumneko_lua.setup {
@@ -118,6 +137,37 @@ lspconfig.sumneko_lua.setup {
     }
 }
 
+require('rust-tools').setup {
+    hover_actions = {
+        auto_focus = true,
+    },
+    server = {
+        on_attach = function(client)
+            require 'illuminate'.on_attach(client)
+
+            map('n', 'gd', function() vim.lsp.buf.definition() end, { buffer = true, desc = 'Go to definition' })
+            map('n', 'gD', function() vim.lsp.buf.declaration() end, { buffer = true, desc = 'Go to declaration' })
+            map('n', 'K', function() require'rust-tools.hover_actions'.hover_actions() end, { buffer = true, desc = 'Hover to get info' })
+            map('n', 'gi', function() vim.lsp.buf.implementation() end, { buffer = true, desc = 'Go to implementation' })
+
+            map('n', '<leader>rr', function() require('rust-tools.runnables').runnables() end, { desc = 'Enable rust runnables' })
+            map('n', '<leader>re', function() require'rust-tools.expand_macro'.expand_macro() end, { desc = 'Expand macros recursively' })
+        end,
+        capabilities = capabilities,
+        settings = {
+            ["rust-analyzer"] = {
+                checkOnSave = {
+                    command = "clippy"
+                },
+                server = {
+                    path = "/Users/nerone/.local/share/nvim/lsp_servers/rust_analyzer/rust_analyzer",
+                }
+            }
+        }
+    }
+}
+
+
 require('lint').linters_by_ft = {
     c = { 'clangtidy', 'flawfinder' },
     cmake = { 'cmakelint' },
@@ -126,7 +176,7 @@ require('lint').linters_by_ft = {
     dockerfile = { 'hadolint' },
     fennel = { 'fennel' },
     go = { 'golangcilint', 'revive' },
-    haskell = { 'hlint' },
+    --    haskell = { 'hlint' },
     html = { 'tidy' },
     javascript = { 'eslint' },
     lua = { 'selene' },

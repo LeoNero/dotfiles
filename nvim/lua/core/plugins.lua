@@ -21,6 +21,7 @@ return require('packer').startup(function(use)
     use 'nvim-treesitter/nvim-treesitter-textobjects'
     use 'JoosepAlviste/nvim-ts-context-commentstring'
     use 'windwp/nvim-ts-autotag'
+    use 'nkrkv/nvim-treesitter-rescript'
 
     -- telescope
     use {
@@ -29,6 +30,7 @@ return require('packer').startup(function(use)
     }
     use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
     use 'tzachar/fuzzy.nvim'
+    use 'nvim-telescope/telescope-ui-select.nvim'
 
     -- lsp
     use 'neovim/nvim-lspconfig'
@@ -50,6 +52,7 @@ return require('packer').startup(function(use)
     }
     use 'weilbith/nvim-code-action-menu'
     use 'hrsh7th/cmp-nvim-lsp'
+    use 'simrat39/rust-tools.nvim'
 
     -- git
     use 'tpope/vim-fugitive'
@@ -163,6 +166,9 @@ return require('packer').startup(function(use)
     use 'tjdevries/train.nvim'
 
 
+    -- haskell
+    use 'itchyny/vim-haskell-indent'
+
     --[[ NOT NEEDED YET - BUT MAY BE USEFUL IN FUTURE
     -- rearrange windows
     use 'sindrets/winshift.nvim'
@@ -204,8 +210,5 @@ return require('packer').startup(function(use)
 
     -- lsp
     use 'simrat39/rust-tools.nvim'
-
-    -- other
-    use 'nvim-telescope/telescope-ui-select.nvim'
 ]]
 end)

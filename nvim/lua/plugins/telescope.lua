@@ -8,10 +8,16 @@ require('telescope').setup {
             override_generic_sorter = true, -- override the generic sorter
             override_file_sorter = true,
             case_mode = "smart_case",
+        },
+        ["ui-select"] = {
+            require("telescope.themes").get_dropdown {},
+            codeactions = false,
         }
     }
 }
+
 require('telescope').load_extension('fzf')
+require("telescope").load_extension("ui-select")
 
 local telescope = require 'telescope.builtin'
 local map = vim.keymap.set
