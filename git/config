@@ -1,6 +1,6 @@
 [user]
 	email = leofnerone@proton.me
-	name = Leo Nerone
+	name = Leonardo Nerone
 [core]
 	editor = nvim
 	excludesfile = /Users/nerone/.config/git/.gitignore_global
@@ -15,3 +15,8 @@
 	cm = commit
 	i = init
 	cl = clone
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true

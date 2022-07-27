@@ -53,6 +53,7 @@ return require('packer').startup(function(use)
     use 'weilbith/nvim-code-action-menu'
     use 'hrsh7th/cmp-nvim-lsp'
     use 'simrat39/rust-tools.nvim'
+    use 'p00f/clangd_extensions.nvim'
 
     -- git
     use 'tpope/vim-fugitive'

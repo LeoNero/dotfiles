@@ -33,8 +33,7 @@ cmp.setup {
             select = true,
         }),
         ["<Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-                cmp.select_next_item()
+            if cmp.visible() then cmp.select_next_item()
             elseif luasnip.expand_or_jumpable() then
                 luasnip.expand_or_jump()
             elseif has_words_before() then
@@ -78,6 +77,7 @@ cmp.setup {
             cmp.config.compare.exact,
             cmp.config.compare.score,
             require 'cmp-under-comparator'.under,
+            -- require 'clangd_extensions.cmp_scores',
             cmp.config.compare.kind,
             cmp.config.compare.sort_text,
             cmp.config.compare.length,

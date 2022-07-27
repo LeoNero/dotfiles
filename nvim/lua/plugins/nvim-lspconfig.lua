@@ -1,6 +1,4 @@
 -- TODO take a look at https://github.com/neovim/nvim-lspconfig/wiki/User-contributed-tips
--- TODO setup https://github.com/simrat39/rust-tools.nvim
--- TODO setup https://github.com/p00f/clangd_extensions.nvim
 
 require('goto-preview').setup {}
 require('trouble').setup {}
@@ -41,7 +39,6 @@ end, { desc = 'Opens diagnostics of current project in Trouble' })
 local servers = {
     'asm_lsp',
     'bashls',
-    'clangd',
     'cmake',
     'cssls',
     'cssmodules_ls',
@@ -137,6 +134,8 @@ lspconfig.sumneko_lua.setup {
     }
 }
 
+-- TODO lots of duplication in this file...
+
 require('rust-tools').setup {
     hover_actions = {
         auto_focus = true,
@@ -147,11 +146,11 @@ require('rust-tools').setup {
 
             map('n', 'gd', function() vim.lsp.buf.definition() end, { buffer = true, desc = 'Go to definition' })
             map('n', 'gD', function() vim.lsp.buf.declaration() end, { buffer = true, desc = 'Go to declaration' })
-            map('n', 'K', function() require'rust-tools.hover_actions'.hover_actions() end, { buffer = true, desc = 'Hover to get info' })
+            map('n', 'K', function() require 'rust-tools.hover_actions'.hover_actions() end, { buffer = true, desc = 'Hover to get info' })
             map('n', 'gi', function() vim.lsp.buf.implementation() end, { buffer = true, desc = 'Go to implementation' })
 
             map('n', '<leader>rr', function() require('rust-tools.runnables').runnables() end, { desc = 'Enable rust runnables' })
-            map('n', '<leader>re', function() require'rust-tools.expand_macro'.expand_macro() end, { desc = 'Expand macros recursively' })
+            map('n', '<leader>re', function() require 'rust-tools.expand_macro'.expand_macro() end, { desc = 'Expand macros recursively' })
         end,
         capabilities = capabilities,
         settings = {
@@ -164,6 +163,26 @@ require('rust-tools').setup {
                 }
             }
         }
+    }
+}
+
+require('clangd_extensions').setup {
+    hover_actions = {
+        auto_focus = true,
+    },
+    server = {
+        on_attach = function(client)
+            require 'illuminate'.on_attach(client)
+
+            map('n', 'gd', function() vim.lsp.buf.definition() end, { buffer = true, desc = 'Go to definition' })
+            map('n', 'gD', function() vim.lsp.buf.declaration() end, { buffer = true, desc = 'Go to declaration' })
+            map('n', 'K', function() vim.lsp.buf.hover() end, { buffer = true, desc = 'Hover to get info' })
+            map('n', 'gi', function() vim.lsp.buf.implementation() end, { buffer = true, desc = 'Go to implementation' })
+
+            map('n', '<leader>rr', function() vim.api.nvim_command('ClangdTypeHierarchy') end, { desc = 'Shows type hierarchy' })
+            -- map('n', '<leader>re', function() require 'rust-tools.expand_macro'.expand_macro() end, { desc = 'Expand macros recursively' })
+        end,
+        capabilities = capabilities,
     }
 }
 
@@ -187,10 +206,15 @@ require('lint').linters_by_ft = {
     yaml = { 'yamllint' },
 }
 
+local format_enabled = true
+vim.api.nvim_create_user_command('ToggleAutoFormat', function() format_enabled = not format_enabled end, {})
+
 vim.api.nvim_create_autocmd('BufWritePre', {
     pattern = '*',
     callback = function()
-        vim.lsp.buf.formatting()
+        if format_enabled then
+            vim.lsp.buf.formatting()
+        end
     end
 })
 vim.api.nvim_create_autocmd({ 'BufWritePost', 'BufWinEnter' }, {
@@ -202,7 +226,7 @@ vim.api.nvim_create_autocmd({ 'BufWritePost', 'BufWinEnter' }, {
 
 
 local bulb = require 'nvim-lightbulb'
-local show_lightbulb = true
+local show_lightbulb = false
 map('n', '<leader>db', function()
     if show_lightbulb then
         bulb.update_lightbulb({ sign = { enabled = false } })
