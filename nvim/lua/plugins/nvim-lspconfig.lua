@@ -39,6 +39,7 @@ end, { desc = 'Opens diagnostics of current project in Trouble' })
 local servers = {
     'asm_lsp',
     'bashls',
+    'clojure_lsp',
     'cmake',
     'cssls',
     'cssmodules_ls',
@@ -99,7 +100,8 @@ for _, lsp in pairs(servers) do
                 map('n', 'gd', function() vim.lsp.buf.definition() end, { buffer = true, desc = 'Go to definition' })
                 map('n', 'gD', function() vim.lsp.buf.declaration() end, { buffer = true, desc = 'Go to declaration' })
                 map('n', 'K', function() vim.lsp.buf.hover() end, { buffer = true, desc = 'Hover to get info' })
-                map('n', 'gi', function() vim.lsp.buf.implementation() end, { buffer = true, desc = 'Go to implementation' })
+                map('n', 'gi', function() vim.lsp.buf.implementation() end,
+                    { buffer = true, desc = 'Go to implementation' })
             end,
             capabilities = capabilities,
             settings = {
@@ -116,7 +118,8 @@ for _, lsp in pairs(servers) do
                 map('n', 'gd', function() vim.lsp.buf.definition() end, { buffer = true, desc = 'Go to definition' })
                 map('n', 'gD', function() vim.lsp.buf.declaration() end, { buffer = true, desc = 'Go to declaration' })
                 map('n', 'K', function() vim.lsp.buf.hover() end, { buffer = true, desc = 'Hover to get info' })
-                map('n', 'gi', function() vim.lsp.buf.implementation() end, { buffer = true, desc = 'Go to implementation' })
+                map('n', 'gi', function() vim.lsp.buf.implementation() end,
+                    { buffer = true, desc = 'Go to implementation' })
             end,
             capabilities = capabilities
         }
@@ -146,11 +149,14 @@ require('rust-tools').setup {
 
             map('n', 'gd', function() vim.lsp.buf.definition() end, { buffer = true, desc = 'Go to definition' })
             map('n', 'gD', function() vim.lsp.buf.declaration() end, { buffer = true, desc = 'Go to declaration' })
-            map('n', 'K', function() require 'rust-tools.hover_actions'.hover_actions() end, { buffer = true, desc = 'Hover to get info' })
+            map('n', 'K', function() require 'rust-tools.hover_actions'.hover_actions() end,
+                { buffer = true, desc = 'Hover to get info' })
             map('n', 'gi', function() vim.lsp.buf.implementation() end, { buffer = true, desc = 'Go to implementation' })
 
-            map('n', '<leader>rr', function() require('rust-tools.runnables').runnables() end, { desc = 'Enable rust runnables' })
-            map('n', '<leader>re', function() require 'rust-tools.expand_macro'.expand_macro() end, { desc = 'Expand macros recursively' })
+            map('n', '<leader>rr', function() require('rust-tools.runnables').runnables() end,
+                { desc = 'Enable rust runnables' })
+            map('n', '<leader>re', function() require 'rust-tools.expand_macro'.expand_macro() end,
+                { desc = 'Expand macros recursively' })
         end,
         capabilities = capabilities,
         settings = {
@@ -179,7 +185,8 @@ require('clangd_extensions').setup {
             map('n', 'K', function() vim.lsp.buf.hover() end, { buffer = true, desc = 'Hover to get info' })
             map('n', 'gi', function() vim.lsp.buf.implementation() end, { buffer = true, desc = 'Go to implementation' })
 
-            map('n', '<leader>rr', function() vim.api.nvim_command('ClangdTypeHierarchy') end, { desc = 'Shows type hierarchy' })
+            map('n', '<leader>rr', function() vim.api.nvim_command('ClangdTypeHierarchy') end,
+                { desc = 'Shows type hierarchy' })
             -- map('n', '<leader>re', function() require 'rust-tools.expand_macro'.expand_macro() end, { desc = 'Expand macros recursively' })
         end,
         capabilities = capabilities,

@@ -166,9 +166,11 @@ return require('packer').startup(function(use)
     -- vim training
     use 'tjdevries/train.nvim'
 
-
     -- haskell
     use 'itchyny/vim-haskell-indent'
+
+    -- fish
+    use 'nickeb96/fish.vim'
 
     --[[ NOT NEEDED YET - BUT MAY BE USEFUL IN FUTURE
     -- rearrange windows
