@@ -51,8 +51,8 @@ autocmd('FileType', {
   group = ag_c,
   pattern = { 'cpp', 'c' },
   callback = function()
-    vim.opt.tabstop = 2
-    vim.opt.shiftwidth = 2
+    vim.opt.tabstop = 4
+    vim.opt.shiftwidth = 4
   end
 })
 
