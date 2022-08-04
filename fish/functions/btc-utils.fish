@@ -9,6 +9,8 @@ alias bc "bitcoin-cli -regtest -rpcuser=leo -rpcpassword=leo"
 function kill_electrum
     docker kill electrs
     docker container rm electrs
+
+    rm -f (pwd)/electrs.toml
 end
 
 function start_bitcoind -a use_new_regtest
@@ -20,7 +22,6 @@ function start_bitcoind -a use_new_regtest
     if test "$argv[1]" = "true"
         kill_electrum
         rm -r -f (pwd)/datadir
-        rm -f (pwd)/electrs.toml
     end
 
     mkdir -p (pwd)/datadir
