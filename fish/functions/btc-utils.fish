@@ -6,6 +6,11 @@ set wallets_names $wallet_1_name $wallet_2_name $miner_wallet_name
 
 alias bc "bitcoin-cli -regtest -rpcuser=leo -rpcpassword=leo"
 
+function kill_electrum
+    docker kill electrs
+    docker container rm electrs
+end
+
 function start_bitcoind -a use_new_regtest
     if test -z "$argv[1]"; or test "$argv[1]" != "true" -a "$argv[1]" != "false"
         echo "Usage: start_bitcoind receives a second argument {true,false} to indicate whether it should use a new regtest or the current one if it exists"
@@ -13,7 +18,9 @@ function start_bitcoind -a use_new_regtest
     end
 
     if test "$argv[1]" = "true"
+        kill_electrum
         rm -r -f (pwd)/datadir
+        rm -f (pwd)/electrs.toml
     end
 
     mkdir -p (pwd)/datadir
@@ -30,6 +37,26 @@ function start_bitcoind -a use_new_regtest
         -rpcport=18443 \
         -rpcuser=leo \
         -rpcpassword=leo
+end
+
+function start_electrum
+    touch (pwd)/electrs.toml
+    echo "auth=\"leo:leo\"" > (pwd)/electrs.toml
+
+    docker create \
+        -p 60001:60001 \
+        --name electrs \
+        --platform linux/amd64 \
+        -v (pwd)/datadir:/data \
+        --env DAEMON_RPC_ADDR=host.docker.internal:18443 \
+        --env DAEMON_P2P_ADDR=host.docker.internal:18444 \
+        --env ELECTRUM_RPC_PORT=60001 \
+        --env NETWORK=regtest \
+        ghcr.io/farcaster-project/containers/electrs:0.9.7
+
+    docker cp (pwd)/electrs.toml electrs:.
+
+    docker start --attach electrs
 end
 
 function create_wallet -a wallet_name
@@ -76,10 +103,6 @@ function mine_blocks
     bc generatetoaddress $amount_of_blocks $wallet_address
 end
 
-# electrum
-# only one server for simplicity
-# use docker for server
-
 function btc-utils
     if test -z "$argv"
         echo "Usage: no arguments passed"
@@ -89,6 +112,10 @@ function btc-utils
     switch $argv[1]
     case "start_bitcoind"
         start_bitcoind $argv[2]
+    case "start_electrum"
+        start_electrum
+    case "kill_electrum"
+        kill_electrum
     case "create_wallets"
         create_wallets
     case "load_all"
