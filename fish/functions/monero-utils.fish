@@ -61,13 +61,18 @@ function start_wallet_cli
         --log-file (pwd)/wallets/logs/$wallet_name.log
 end
 
-function start_wallets_rpc
+function start_wallets_rpc -a port
+    if test -z "$argv[1]"
+        echo "Usage: start_wallet_rpc requires a port as argument"
+        return 1
+    end
+
     wallet-rpc \
         --disable-rpc-login \
         --wallet-dir (pwd)/wallets \
         --daemon-address http://localhost:18081 \
         --rpc-bind-ip 0.0.0.0 \
-        --rpc-bind-port 18083 \
+        --rpc-bind-port $port \
         --confirm-external-bind \
         --trusted-daemon \
         --log-level 1
@@ -166,7 +171,7 @@ function monero-utils
     case "start_wallet_cli"
         start_wallet_cli $argv[2]
     case "start_wallets_rpc"
-        start_wallets_rpc
+        start_wallets_rpc $argv[2]
     case "run_wallet_cmd"
         run_wallet_cmd $argv[2..]
     case "start_monerod"
