@@ -54,6 +54,10 @@ return require('packer').startup(function(use)
     use 'hrsh7th/cmp-nvim-lsp'
     use 'simrat39/rust-tools.nvim'
     use 'p00f/clangd_extensions.nvim'
+    use {
+        'ShinKage/idris2-nvim',
+        requires = 'MunifTanjim/nui.nvim',
+    }
 
     -- git
     use 'tpope/vim-fugitive'
@@ -100,6 +104,7 @@ return require('packer').startup(function(use)
 
     -- colorschemes
     use 'folke/tokyonight.nvim'
+    use 'marko-cerovac/material.nvim'
     use {
         'catppuccin/nvim',
         as = 'catppuccin',
@@ -171,6 +176,20 @@ return require('packer').startup(function(use)
 
     -- fish
     use 'nickeb96/fish.vim'
+
+    -- coq
+    use 'whonore/Coqtail'
+    use {
+        'tpope/vim-endwise',
+        ft = { 'coq' }
+    }
+    use {
+        'andymass/vim-matchup',
+        ft = { 'coq' }
+    }
+
+    -- devcontainers
+    use 'https://codeberg.org/esensar/nvim-dev-container'
 
     --[[ NOT NEEDED YET - BUT MAY BE USEFUL IN FUTURE
     -- rearrange windows

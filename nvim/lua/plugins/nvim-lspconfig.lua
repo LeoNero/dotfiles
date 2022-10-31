@@ -1,4 +1,19 @@
 -- TODO take a look at https://github.com/neovim/nvim-lspconfig/wiki/User-contributed-tips
+-- TODO lots of duplication in this file...
+
+require('devcontainer').setup {
+    attach_mounts = {
+        always = true,
+        neovim_config = {
+            enabled = true,
+            options = { "readonly" }
+        },
+        neovim_data = {
+            enabled = true,
+            options = {}
+        },
+    },
+}
 
 require('goto-preview').setup {}
 require('trouble').setup {}
@@ -16,7 +31,7 @@ require('nvim-lsp-installer').setup {
 local lspconfig = require 'lspconfig'
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 local map = vim.keymap.set
 
@@ -75,6 +90,8 @@ local servers = {
     'vimls',
     'vuels',
     'yamlls',
+
+    'coq_lsp',
 }
 
 map('n', '<leader>rn', function() vim.lsp.buf.rename() end, { desc = 'Rename node' })
@@ -107,6 +124,7 @@ for _, lsp in pairs(servers) do
             settings = {
                 haskell = {
                     hlintOn = true,
+                    formattingProvider = 'fourmolu',
                 }
             }
         }
@@ -137,7 +155,19 @@ lspconfig.sumneko_lua.setup {
     }
 }
 
--- TODO lots of duplication in this file...
+require('idris2').setup {
+    server = {
+        on_attach = function(client)
+            require 'illuminate'.on_attach(client)
+
+            map('n', 'gd', function() vim.lsp.buf.definition() end, { buffer = true, desc = 'Go to definition' })
+            map('n', 'gD', function() vim.lsp.buf.declaration() end, { buffer = true, desc = 'Go to declaration' })
+            map('n', 'K', function() vim.lsp.buf.hover() end, { buffer = true, desc = 'Hover to get info' })
+            map('n', 'gi', function() vim.lsp.buf.implementation() end,
+                { buffer = true, desc = 'Go to implementation' })
+        end,
+    }
+}
 
 require('rust-tools').setup {
     hover_actions = {
@@ -162,10 +192,14 @@ require('rust-tools').setup {
         settings = {
             ["rust-analyzer"] = {
                 checkOnSave = {
-                    command = "clippy"
+                    command = "clippy",
+                    allTargets = true,
                 },
                 server = {
                     path = "/Users/nerone/.local/share/nvim/lsp_servers/rust_analyzer/rust_analyzer",
+                },
+                cargo = {
+                    features = "all"
                 }
             }
         }
@@ -202,7 +236,7 @@ require('lint').linters_by_ft = {
     dockerfile = { 'hadolint' },
     fennel = { 'fennel' },
     go = { 'golangcilint', 'revive' },
-    --    haskell = { 'hlint' },
+    -- haskell = { 'hlint' },
     html = { 'tidy' },
     javascript = { 'eslint' },
     lua = { 'selene' },
@@ -220,7 +254,7 @@ vim.api.nvim_create_autocmd('BufWritePre', {
     pattern = '*',
     callback = function()
         if format_enabled then
-            vim.lsp.buf.formatting()
+            vim.lsp.buf.format { async = true }
         end
     end
 })

@@ -5,6 +5,9 @@ if shell:sub(- #"fish") == "fish" then
     vim.opt.shell = 'sh'
 end ]]
 
+-- some filetype options
+vim.cmd('filetype plugin indent on')
+
 -- don't make a backup before overwriting a file
 opt.backup = false
 opt.writebackup = false
@@ -26,7 +29,6 @@ opt.incsearch = true
 
 -- case-insensitive searching
 opt.ignorecase = true
-
 -- case-sensitive if expression contains a capital letter
 opt.smartcase = true
 
@@ -93,3 +95,6 @@ opt.foldlevelstart = 50
 -- opt.foldmethod = 'indent'
 opt.foldmethod = 'expr'
 opt.foldexpr = 'nvim_treesitter#foldexpr()'
+
+--- Python
+vim.g.python3_host_prog = '/opt/homebrew/bin/python3'

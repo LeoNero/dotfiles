@@ -21,5 +21,6 @@ catppuccin.setup {
     }
 }
 
-vim.g.catppuccin_flavour = "macchiato" -- frappe and macchiato are my favorites
-vim.cmd[[colorscheme catppuccin]]
+vim.g.catppuccin_flavour = "mocha" -- frappe and macchiato are my favorites
+vim.cmd [[colorscheme catppuccin]]
+

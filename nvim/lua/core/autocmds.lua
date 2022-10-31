@@ -42,6 +42,8 @@ autocmd({ 'BufNewFile', 'BufRead' }, {
     pattern = 'Makefile',
     callback = function()
         vim.bo.expandtab = false
+        vim.opt.tabstop = 2
+        vim.opt.shiftwidth = 2
     end
 })
 
@@ -79,6 +81,17 @@ autocmd({ 'BufRead', 'BufNewFile' }, {
     end
 })
 
+-- Coq
+local ag_coq = augroup('filetype_coq', agOpts)
+autocmd('FileType', {
+    group = ag_coq,
+    pattern = { 'coq' },
+    callback = function()
+        vim.opt.tabstop = 2
+        vim.opt.shiftwidth = 2
+    end
+})
+
 --  Quickfix and Loclist
 local ag_qf_loc = augroup('filetype_qf_loc', agOpts)
 autocmd('FileType', {
@@ -109,3 +122,13 @@ autocmd('FileType', {
         end
     end
 })
+
+-- Coq colors
+vim.cmd [[
+augroup CoqtailHighlights
+  autocmd!
+  autocmd ColorScheme *
+    \  hi def CoqtailChecked ctermbg=236 guibg=#7c7f93
+    \| hi def CoqtailSent    ctermbg=237 guibg=#7c7f93
+augroup END
+]]

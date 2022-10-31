@@ -85,3 +85,6 @@ map('n', 'zf', 'mzzMzvzz', { desc = 'Closes all folds except the current one' })
 
 -- wow very magic search
 map('n', '/', '/\\v', { desc = 'wow so much magic search' })
+
+-- disable Coqtail's insert mod maps
+vim.g.coqtail_noimap = true

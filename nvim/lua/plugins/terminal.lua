@@ -5,30 +5,30 @@ require('toggleterm').setup()
 map('t', 'jk', [[<C-\><C-n>]], { desc = 'Exits terminal mode' })
 
 map({ 'n', 't' }, '<leader>otr', function()
-  local term_to_toggle = ""
-  if vim.v.count ~= 0 then
-    term_to_toggle = vim.v.count
-  end
+    local term_to_toggle = ""
+    if vim.v.count ~= 0 then
+        term_to_toggle = vim.v.count
+    end
 
-  vim.api.nvim_command(term_to_toggle .. 'ToggleTerm')
+    vim.api.nvim_command(term_to_toggle .. 'ToggleTerm')
 end, { desc = 'Toggles terminal in a window' })
 
 map({ 'n', 't' }, '<leader>ota', function()
-  vim.api.nvim_command('ToggleTermToggleAll')
+    vim.api.nvim_command('ToggleTermToggleAll')
 end, { desc = 'Toggles all terminals' })
 
 map({ 'n', 't' }, '<leader>otf', function()
-  vim.api.nvim_command('ToggleTerm direction=float')
+    vim.api.nvim_command('ToggleTerm direction=float')
 end, { desc = 'Toggles terminal in a floating window' })
 
 map({ 'n', 't' }, '<leader>ott', function()
-  vim.api.nvim_command('ToggleTerm direction=tab')
+    vim.api.nvim_command('ToggleTerm direction=tab')
 end, { desc = 'Toggles terminal in a tab' })
 
 local terminal_count = 1;
 map({ 'n', 't' }, '<leader>otn', function()
-  terminal_count = terminal_count + 1
-  vim.api.nvim_command(terminal_count .. "ToggleTerm")
+    terminal_count = terminal_count + 1
+    vim.api.nvim_command(terminal_count .. "ToggleTerm")
 end, { desc = 'Toggles a new terminal in a new window' })
 
 -- navigate splits when in terminal mode
