@@ -25,9 +25,12 @@ map('n', '<leader>sc', function()
 end, { desc = 'Toggles spell on/off' })
 
 -- tabs
-map('n', '<leader>tt', function() vim.api.nvim_command('tabnew') end, { desc = 'Creates a new tab after the current one' })
-map('n', '<leader>tp', function() vim.api.nvim_command('-tabnew') end, { desc = 'Creates a new tab before the current one' })
-map('n', '<leader>tf', function() vim.api.nvim_command('0tabnew') end, { desc = 'Creates a new tab before the first one' })
+map('n', '<leader>tt', function() vim.api.nvim_command('tabnew') end,
+    { desc = 'Creates a new tab after the current one' })
+map('n', '<leader>tp', function() vim.api.nvim_command('-tabnew') end,
+    { desc = 'Creates a new tab before the current one' })
+map('n', '<leader>tf', function() vim.api.nvim_command('0tabnew') end,
+    { desc = 'Creates a new tab before the first one' })
 map('n', '<leader>tl', function() vim.api.nvim_command('$tabnew') end, { desc = 'Creates a new tab after the last one' })
 map('n', '<leader>tn', function() vim.api.nvim_command('tabnext') end, { desc = 'Goes to next tab' })
 map('n', '<leader>tp', function() vim.api.nvim_command('tabprevious') end, { desc = 'Goes to previous tab' })

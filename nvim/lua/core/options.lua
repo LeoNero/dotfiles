@@ -97,4 +97,8 @@ opt.foldmethod = 'expr'
 opt.foldexpr = 'nvim_treesitter#foldexpr()'
 
 --- Python
-vim.g.python3_host_prog = '/opt/homebrew/bin/python3'
+if vim.fn.exists("$CONDA_PREFIX") == 1 then
+    vim.g.python_host_prog = vim.fn.getenv("CONDA_PREFIX") .. "/bin/python"
+else
+    vim.g.python_host_prog = vim.fn.substitute(vim.fn.system("which python3"), "\n", "", "g")
+end

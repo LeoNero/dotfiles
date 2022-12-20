@@ -1,3 +1,12 @@
+local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+parser_config.idris2 = {
+    install_info = {
+        url = "/Users/nerone/Documents/Projects/tests/tree-sitter-idris2",
+        files = { "src/parser.c" },
+    },
+    filetype = "idris2", -- if filetype does not match the parser name
+}
+
 require('nvim-treesitter.configs').setup {
     highlight = {
         enable = true,
@@ -18,9 +27,9 @@ require('nvim-treesitter.configs').setup {
     autotag = {
         enable = true,
     },
-   textobjects = {
+    textobjects = {
         select = {
-           enable = true,
+            enable = true,
             lookahead = true,
             keymaps = {
                 ["af"] = "@function.outer",

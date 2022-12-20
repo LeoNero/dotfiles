@@ -92,6 +92,17 @@ autocmd('FileType', {
     end
 })
 
+-- Terraform
+local ag_terraform = augroup('filetype_terraform', agOpts)
+autocmd('FileType', {
+    group = ag_terraform,
+    pattern = { 'terraform' },
+    callback = function()
+        vim.opt.tabstop = 2
+        vim.opt.shiftwidth = 2
+    end
+})
+
 --  Quickfix and Loclist
 local ag_qf_loc = augroup('filetype_qf_loc', agOpts)
 autocmd('FileType', {

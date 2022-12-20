@@ -58,7 +58,7 @@ cmp.setup {
         { name = 'nvim_lua', priority = 2, group_index = 1 },
         { name = 'path', priority = 3, group_index = 1 },
         { name = 'nvim_lsp_signature_help', priority = 4, group_index = 1 },
-        { name = 'tmux', priority = 5, group_index = 1 },
+        { name = 'tmux', priority = 5, group_index = 2 },
         { name = 'buffer', priority = 1, group_index = 2 },
         { name = 'rg', priority = 2, group_index = 2 }
     },

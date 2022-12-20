@@ -103,12 +103,14 @@ return require('packer').startup(function(use)
     }
 
     -- colorschemes
-    use 'folke/tokyonight.nvim'
-    use 'marko-cerovac/material.nvim'
     use {
         'catppuccin/nvim',
         as = 'catppuccin',
     }
+    use 'tiagovla/tokyodark.nvim'
+    use 'yazeed1s/minimal.nvim'
+    use 'EdenEast/nightfox.nvim'
+    use 'savq/melange'
 
     -- status line
     use {
@@ -174,6 +176,10 @@ return require('packer').startup(function(use)
     -- haskell
     use 'itchyny/vim-haskell-indent'
 
+    -- python
+    use 'psf/black'
+    use 'hkupty/iron.nvim'
+
     -- fish
     use 'nickeb96/fish.vim'
 
@@ -190,6 +196,12 @@ return require('packer').startup(function(use)
 
     -- devcontainers
     use 'https://codeberg.org/esensar/nvim-dev-container'
+
+    -- sane parenthesis for Lisp-like languages
+    use 'gpanders/nvim-parinfer'
+
+    -- copilot
+    use 'github/copilot.vim'
 
     --[[ NOT NEEDED YET - BUT MAY BE USEFUL IN FUTURE
     -- rearrange windows

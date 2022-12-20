@@ -1,3 +1,5 @@
+require("symbols-outline").setup()
+
 local is_vista_open = false
 vim.keymap.set('n', '<leader>1', function()
     if is_vista_open then
