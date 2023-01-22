@@ -25,3 +25,12 @@ set -gx PATH "$PNPM_HOME" $PATH
 eval /Users/nerone/opt/miniconda3/bin/conda "shell.fish" "hook" $argv | source
 # <<< conda initialize <<<
 
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/nerone/Downloads/google-cloud-sdk/path.fish.inc' ]; . '/Users/nerone/Downloads/google-cloud-sdk/path.fish.inc'; end
+
+# bass source '/Users/nerone/Documents/Projects/tests/gcloud/completion.bash.inc'
+
+# bun
+set --export BUN_INSTALL "$HOME/.bun"
+set --export PATH $BUN_INSTALL/bin $PATH

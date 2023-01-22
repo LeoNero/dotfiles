@@ -302,7 +302,7 @@ require('lint').linters_by_ft = {
     lua = { 'selene' },
     markdown = { 'vale', 'markdownlint' },
     nix = { 'nix', 'statix' },
-    python = { 'flake8', 'mypy', 'pydocstyle', 'pylint', 'vulture' },
+    python = { 'flake8', 'mypy', 'pydocstyle', 'vulture' },
     vim = { 'vint' },
     yaml = { 'yamllint' },
 }

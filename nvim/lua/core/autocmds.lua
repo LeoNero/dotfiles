@@ -69,6 +69,17 @@ autocmd('FileType', {
     end
 })
 
+-- OCaml
+local ag_ocaml = augroup('filetype_ocaml', agOpts)
+autocmd('FileType', {
+    group = ag_ocaml,
+    pattern = { 'ocaml' },
+    callback = function()
+        vim.opt.tabstop = 2
+        vim.opt.shiftwidth = 2
+    end
+})
+
 -- Nix
 local nix_pattern = { '*.nix' }
 local ag_nix = augroup('filetype_nix', agOpts)
