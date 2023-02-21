@@ -22,7 +22,9 @@ set -gx PATH "$PNPM_HOME" $PATH
 # pnpm end
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-eval /Users/nerone/opt/miniconda3/bin/conda "shell.fish" "hook" $argv | source
+if test -f /Users/nerone/opt/miniconda3/bin/conda
+    eval /Users/nerone/opt/miniconda3/bin/conda "shell.fish" "hook" $argv | source
+end
 # <<< conda initialize <<<
 
 
@@ -34,3 +36,8 @@ if [ -f '/Users/nerone/Downloads/google-cloud-sdk/path.fish.inc' ]; . '/Users/ne
 # bun
 set --export BUN_INSTALL "$HOME/.bun"
 set --export PATH $BUN_INSTALL/bin $PATH
+set --export PATH $PATH /opt/homebrew/bin/
+
+set -gx WASMTIME_HOME "$HOME/.wasmtime"
+
+string match -r ".wasmtime" "$PATH" > /dev/null; or set -gx PATH "$WASMTIME_HOME/bin" $PATH
