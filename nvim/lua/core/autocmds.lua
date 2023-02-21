@@ -4,6 +4,28 @@ local map = vim.keymap.set
 
 local agOpts = { clear = true }
 
+-- Protobuf
+local ag_proto = augroup('filetype_proto', agOpts)
+autocmd('FileType', {
+    group = ag_proto,
+    pattern = { 'proto' },
+    callback = function()
+        vim.bo.tabstop = 2
+        vim.bo.shiftwidth = 2
+    end
+})
+
+-- TOML
+local ag_toml = augroup('filetype_toml', agOpts)
+autocmd('FileType', {
+    group = ag_toml,
+    pattern = { 'toml' },
+    callback = function()
+        vim.bo.tabstop = 2
+        vim.bo.shiftwidth = 2
+    end
+})
+
 -- Typescript and Javascript and JSON
 local ts_js_pattern = { '*.ts', '*.js', '*.json', '*.res', '*.resi' }
 local ag_ts_js = augroup('filetype_js_ts', agOpts)
@@ -108,6 +130,17 @@ local ag_terraform = augroup('filetype_terraform', agOpts)
 autocmd('FileType', {
     group = ag_terraform,
     pattern = { 'terraform' },
+    callback = function()
+        vim.opt.tabstop = 2
+        vim.opt.shiftwidth = 2
+    end
+})
+
+-- Dart
+local ag_dart = augroup('filetype_dart', agOpts)
+autocmd('FileType', {
+    group = ag_dart,
+    pattern = { 'dart' },
     callback = function()
         vim.opt.tabstop = 2
         vim.opt.shiftwidth = 2

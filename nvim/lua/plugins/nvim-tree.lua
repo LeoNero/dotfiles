@@ -1,8 +1,6 @@
 local tree = require('nvim-tree')
 
 tree.setup {
-    open_on_setup = true,
-    open_on_setup_file = true,
     open_on_tab = true,
     update_focused_file = {
         enable = true

@@ -53,6 +53,7 @@ return require('packer').startup(function(use)
     use 'weilbith/nvim-code-action-menu'
     use 'hrsh7th/cmp-nvim-lsp'
     use 'simrat39/rust-tools.nvim'
+    use 'akinsho/flutter-tools.nvim'
     use 'p00f/clangd_extensions.nvim'
     use {
         'ShinKage/idris2-nvim',
@@ -203,6 +204,9 @@ return require('packer').startup(function(use)
     -- copilot
     use 'github/copilot.vim'
 
+    -- protobuf
+    use 'wfxr/protobuf.vim'
+
     --[[ NOT NEEDED YET - BUT MAY BE USEFUL IN FUTURE
     -- rearrange windows
     use 'sindrets/winshift.nvim'
@@ -241,8 +245,5 @@ return require('packer').startup(function(use)
 
     -- useful mappings
     use 'ggandor/lightspeed.nvim'
-
-    -- lsp
-    use 'simrat39/rust-tools.nvim'
 ]]
 end)

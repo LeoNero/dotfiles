@@ -59,12 +59,12 @@ local servers = {
     'cmake',
     'cssls',
     'cssmodules_ls',
-    'dartls',
-    'denols',
+    --[[ 'dartls', ]]
+    --[[ 'denols', ]]
     'dockerls',
     'dotls',
     'eslint',
-    'fennel-ls',
+    'fennel_ls',
     'gopls',
     'hls',
     'html',
@@ -75,14 +75,14 @@ local servers = {
     'opencl_ls',
     'pylsp',
     --[[ 'pyright', ]]
-    'quick_lint_js',
+    --[[ 'quick_lint_js', ]]
     'reason_ls',
     'rescriptls',
     'rnix',
     -- 'rome',
     'solc',
-    'stylelint_lsp',
-    'sumneko_lua',
+    --[[ 'stylelint_lsp', ]]
+    'lua_ls',
     'svelte',
     --[[ 'tailwindcss', ]]
     'taplo',
@@ -148,7 +148,7 @@ for _, lsp in pairs(servers) do
 
 end
 
-lspconfig.sumneko_lua.setup {
+lspconfig.lua_ls.setup {
     settings = {
         Lua = {
             diagnostics = {
@@ -256,13 +256,54 @@ require('rust-tools').setup {
                     allTargets = true,
                 },
                 server = {
-                    path = "/Users/nerone/.local/share/nvim/lsp_servers/rust_analyzer/rust_analyzer",
+                    path = "/Users/nerone/.local/share/nvim/lsp_servers/rust_analyzer/rust-analyzer",
                 },
                 cargo = {
                     features = "all"
                 }
             }
         }
+    }
+}
+
+require('flutter-tools').setup {
+    decorations = {
+        statusline = {
+            app_version = true,
+            device = true,
+        }
+    },
+    widget_guides = {
+        enabled = true,
+    },
+    lsp = {
+        color = {
+            enabled = true,
+        },
+        capabilities = capabilities,
+        on_attach = function(client)
+            require 'illuminate'.on_attach(client)
+
+            map('n', 'gd', function() vim.lsp.buf.definition() end, { buffer = true, desc = 'Go to definition' })
+            map('n', 'gD', function() vim.lsp.buf.declaration() end, { buffer = true, desc = 'Go to declaration' })
+            map('n', 'K', function() vim.lsp.buf.hover() end, { buffer = true, desc = 'Hover to get info' })
+            map('n', 'gi', function() vim.lsp.buf.implementation() end, { buffer = true, desc = 'Go to implementation' })
+
+            map('n', '<localleader>fr', function() vim.api.nvim_command('FlutterRun') end,
+                { buffer = true, desc = 'Run the current Flutter project' })
+            map('n', '<localleader>ff', function() require('telescope').extensions.flutter.commands() end,
+                { buffer = true, desc = 'Open Telescope with Flutter commands' })
+            map('n', '<localleader>fd', function() vim.api.nvim_command('FlutterDevices') end,
+                { buffer = true, desc = 'Brings up a list of connected devices to select from' })
+            map('n', '<localleader>fe', function() vim.api.nvim_command('FlutterEmulators') end,
+                { buffer = true, desc = 'Similar to devices but shows a list of emulators to choose from' })
+            map('n', '<localleader>fq', function() vim.api.nvim_command('FlutterQuit') end,
+                { buffer = true, desc = 'Ends a running session' })
+            map('n', '<localleader>ft', function() vim.api.nvim_command('FlutterOutlineToggle') end,
+                { buffer = true, desc = 'Toggle the outline window showing the widget tree for the given file' })
+            map('n', '<localleader>fh', function() vim.api.nvim_command('FlutterReload') end,
+                { buffer = true, desc = 'Flutter Hot Reload' })
+        end,
     }
 }
 
@@ -284,6 +325,17 @@ require('clangd_extensions').setup {
             -- map('n', '<leader>re', function() require 'rust-tools.expand_macro'.expand_macro() end, { desc = 'Expand macros recursively' })
         end,
         capabilities = capabilities,
+        handlers = {
+            ["textDocument/publishDiagnostics"] = function (err, result, ctx, config)
+                if vim.bo.filetype ~= "proto" then
+                    vim.lsp.handlers["textDocument/publishDiagnostics"](err, result, ctx, config)
+                else
+                    local client_id = ctx.client_id
+                    local client = vim.lsp.get_client_by_id(client_id)
+                    client.offset_encoding = "utf-8"
+                end
+            end
+        }
     }
 }
 
