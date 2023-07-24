@@ -1,10 +1,15 @@
 require('mini.trailspace').setup {}
 require('mini.bufremove').setup {}
 
+local trim_enabled = true
+vim.api.nvim_create_user_command('ToggleTrim', function() trim_enabled = not trim_enabled end, {})
+
 vim.api.nvim_create_autocmd('BufWritePre', {
     pattern = { '*' },
     callback = function()
-        MiniTrailspace.trim()
+        if trim_enabled then
+            MiniTrailspace.trim()
+        end
     end
 })
 

@@ -1,6 +1,6 @@
 require('telescope').setup {
     defaults = {
-        file_ignore_patterns = { 'tmp', 'undodir' }
+        file_ignore_patterns = { 'tmp', 'undodir', 'bin' }
     },
     extensions = {
         fzf = {

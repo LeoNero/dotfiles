@@ -22,7 +22,7 @@ require('lualine').setup {
             color = { gui = 'none' }
         } },
         lualine_c = {
-            'filename',
+            { 'filename',       path = 1 },
             { gps.get_location, cond = gps.is_available }
         },
         lualine_z = { {

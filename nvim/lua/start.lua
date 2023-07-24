@@ -1,5 +1,4 @@
 require('impatient')
-require('nvim-startup').setup()
 
 require('core.plugins')
 require('core.options')
@@ -39,3 +38,4 @@ require('plugins/sessions')
 require('plugins/git')
 require('plugins/which-key')
 require('plugins/coq')
+require('plugins/vimtex')

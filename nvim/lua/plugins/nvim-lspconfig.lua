@@ -1,6 +1,8 @@
 -- TODO take a look at https://github.com/neovim/nvim-lspconfig/wiki/User-contributed-tips
 -- TODO lots of duplication in this file...
 
+require("neodev").setup {}
+
 require('devcontainer').setup {
     attach_mounts = {
         always = true,
@@ -18,15 +20,17 @@ require('devcontainer').setup {
 require('goto-preview').setup {}
 require('trouble').setup {}
 
-require('nvim-lsp-installer').setup {
+require("mason").setup {
     ui = {
         icons = {
-            server_installed = "✓",
-            server_pending = "➜",
-            server_uninstalled = "✗"
+            package_installed = "✓",
+            package_pending = "➜",
+            package_uninstalled = "✗",
         }
     }
 }
+
+require("mason-lspconfig").setup {}
 
 local lspconfig = require 'lspconfig'
 
@@ -52,55 +56,82 @@ map('n', '<leader>dw', function()
 end, { desc = 'Opens diagnostics of current project in Trouble' })
 
 local servers = {
-    'ansiblels',
+    'arduino_language_server',
+    'astro',
     'asm_lsp',
     'bashls',
-    'clojure_lsp',
+    'bufls',
     'cmake',
+    'crystalline',
     'cssls',
     'cssmodules_ls',
-    --[[ 'dartls', ]]
-    --[[ 'denols', ]]
+    'dhall_lsp_server',
+    'docker_compose_language_service',
     'dockerls',
     'dotls',
+    'elixirls',
     'eslint',
-    'fennel_ls',
+    'fennel_language_server',
+    'gleam',
+    'graphql',
     'gopls',
     'hls',
+    'hoon_ls',
     'html',
-    'jdtls',
+    'jqls',
     'jsonls',
+    --[[ 'jsonld-lsp', ]]
+    'jsonnet_ls',
+    'lua_ls',
     'ltex',
-    'ocamllsp',
-    'opencl_ls',
+    'marksman',
+    'nil_ls',
+    --[[ 'nginx-language-server', ]]
+    'nim_langserver',
+    'pest_ls',
+    'prismals',
     'pylsp',
-    --[[ 'pyright', ]]
-    --[[ 'quick_lint_js', ]]
     'reason_ls',
     'rescriptls',
-    'rnix',
-    -- 'rome',
     'solc',
-    --[[ 'stylelint_lsp', ]]
-    'lua_ls',
+    'solidity_ls_nomicfoundation',
+    'sqlls',
+    'stylelint_lsp',
     'svelte',
-    --[[ 'tailwindcss', ]]
+    'tailwindcss',
     'taplo',
     'terraformls',
-    'texlab',
     'tflint',
+    'texlab',
     'tsserver',
+    'typst_lsp',
+    'vale_ls',
+    'veryl_ls',
     'vimls',
-    'vuels',
+    'vls',
+    'wgsl_analyzer',
     'yamlls',
+    'zls',
 
-    'coq_lsp',
+    --[[ 'coq_lsp', ]]
+    'ocamllsp',
+    'erlangls',
+    'yls',
 }
 
 map('n', '<leader>rn', function() vim.lsp.buf.rename() end, { desc = 'Rename node' })
 
-local saga = require 'lspsaga'
-saga.init_lsp_saga()
+require('lspsaga').setup {
+    lightbulb = {
+        enable_in_insert = false,
+        virtual_text = false,
+    },
+    code_action = {
+        keys = {
+            quit = "<C-c>",
+        },
+    }
+}
 map('n', '<leader>D', function() require('lspsaga.signaturehelp').signature_help() end, { desc = 'See type definition' })
 
 local goto_p = require 'goto-preview'
@@ -133,7 +164,7 @@ for _, lsp in pairs(servers) do
         }
     else
         lspconfig[lsp].setup {
-            on_attach = function(client)
+            on_attach = function(client, bufnr)
                 require 'illuminate'.on_attach(client)
 
                 map('n', 'gd', function() vim.lsp.buf.definition() end, { buffer = true, desc = 'Go to definition' })
@@ -141,11 +172,24 @@ for _, lsp in pairs(servers) do
                 map('n', 'K', function() vim.lsp.buf.hover() end, { buffer = true, desc = 'Hover to get info' })
                 map('n', 'gi', function() vim.lsp.buf.implementation() end,
                     { buffer = true, desc = 'Go to implementation' })
+
+                if client.resolved_capabilities.code_lens then
+                    local codelens = vim.api.nvim_create_augroup(
+                        'LSPCodeLens',
+                        { clear = true }
+                    )
+                    vim.api.nvim_create_autocmd({ 'BufEnter', 'InsertLeave', 'CursorHold' }, {
+                        group = codelens,
+                        callback = function()
+                            vim.lsp.codelens.refresh()
+                        end,
+                        buffer = bufnr,
+                    })
+                end
             end,
             capabilities = capabilities
         }
     end
-
 end
 
 lspconfig.lua_ls.setup {
@@ -153,10 +197,15 @@ lspconfig.lua_ls.setup {
         Lua = {
             diagnostics = {
                 globals = { 'vim' }
+            },
+            completion = {
+                callSnippet = "Replace"
             }
         }
     }
 }
+
+require('go').setup()
 
 require('idris2').setup {
     server = {
@@ -187,12 +236,13 @@ require('idris2').setup {
             map('n', '<leader>ics', function() require('idris2.semantic').clear() end,
                 { buffer = true, desc = 'Clear semantic groups' })
             map('n', '<leader>iom', function() require('idris2.metavars').request_all() end,
-
                 { buffer = true, desc = 'Open a popup with all the metavars and jump on selection' })
             map('n', '<leader>ibn', function() require('idris2.browse').browse() end,
-                { buffer = true,
+                {
+                    buffer = true,
 
-                    desc = 'Asks the user for a namespace and returns the list of names visible in that namespace' })
+                    desc = 'Asks the user for a namespace and returns the list of names visible in that namespace'
+                })
             map('n', '<leader>ish', function() require('idris2.hover').open_split() end,
                 { buffer = true, desc = 'Show hovers in a persistent split window, can show full history' })
             map('n', '<leader>ich', function() require('idris2.hover').close_split() end,
@@ -200,8 +250,11 @@ require('idris2').setup {
 
 
             map('n', '<localleader>x', function() require('idris2.repl').evaluate() end,
-                { buffer = true,
-                    desc = 'Prompts for an expression that the LSP should evaluate in the context of the current file. Value can be passed also directly or via visual selection, instead of prompting, and in the latter case can be substituted directly' })
+                {
+                    buffer = true,
+                    desc =
+                    'Prompts for an expression that the LSP should evaluate in the context of the current file. Value can be passed also directly or via visual selection, instead of prompting, and in the latter case can be substituted directly'
+                })
 
             map('n', '<localleader>c', function() require('idris2.code_action').case_split() end,
                 { buffer = true, desc = 'Case splits a name on the LHS, applies with no confirmation' })
@@ -216,8 +269,10 @@ require('idris2').setup {
             map('n', '<localleader>o', function() require('idris2.code_action').expr_search() end,
                 { buffer = true, desc = 'Tries to fill a metavar, produces multiple results' })
             map('n', '<localleader>gd', function() require('idris2.code_action').generate_def() end,
-                { buffer = true,
-                    desc = 'Tries to build a complete definition for a declaration, produces multiple results' })
+                {
+                    buffer = true,
+                    desc = 'Tries to build a complete definition for a declaration, produces multiple results'
+                })
             map('n', '<localleader>rh', function() require('idris2.code_action').refine_hole() end,
                 { buffer = true, desc = 'Tries to partially fill a metavar with a name' })
             map('n', '<localleader>mn', function() require('idris2.metavars').goto_next() end,
@@ -226,6 +281,21 @@ require('idris2').setup {
                 { buffer = true, desc = 'Jumps to the previous metavar in the buffer' })
         end
 
+    }
+}
+
+require('coq-lsp').setup {
+    lsp = {
+        on_attach = function(client)
+            require 'illuminate'.on_attach(client)
+
+            map('n', 'gd', function() vim.lsp.buf.definition() end, { buffer = true, desc = 'Go to definition' })
+            map('n', 'gD', function() vim.lsp.buf.declaration() end, { buffer = true, desc = 'Go to declaration' })
+            map('n', 'K', function() vim.lsp.buf.hover() end, { buffer = true, desc = 'Hover to get info' })
+            map('n', 'gi', function() vim.lsp.buf.implementation() end,
+                { buffer = true, desc = 'Go to implementation' })
+        end,
+        cmd = { 'coq-lsp' }
     }
 }
 
@@ -250,13 +320,18 @@ require('rust-tools').setup {
         end,
         capabilities = capabilities,
         settings = {
-            ["rust-analyzer"] = {
+            ['rust-analyzer'] = {
                 checkOnSave = {
-                    command = "clippy",
-                    allTargets = true,
+                    --[[ command = "clippy", ]]
+                    overrideCommand = {
+                        'cargo', 'clippy', '--workspace', '--message-format=json',
+                        '--all-targets', '--all-features'
+                    },
+                    --[[ command: 'clippy', ]]
+                    --[[ allTargets = true, ]]
                 },
                 server = {
-                    path = "/Users/nerone/.local/share/nvim/lsp_servers/rust_analyzer/rust-analyzer",
+                    path = "/Users/nerone/.local/share/nvim/mason/bin/rust-analyzer",
                 },
                 cargo = {
                     features = "all"
@@ -326,7 +401,7 @@ require('clangd_extensions').setup {
         end,
         capabilities = capabilities,
         handlers = {
-            ["textDocument/publishDiagnostics"] = function (err, result, ctx, config)
+            ["textDocument/publishDiagnostics"] = function(err, result, ctx, config)
                 if vim.bo.filetype ~= "proto" then
                     vim.lsp.handlers["textDocument/publishDiagnostics"](err, result, ctx, config)
                 else
@@ -348,7 +423,6 @@ require('lint').linters_by_ft = {
     dockerfile = { 'hadolint' },
     fennel = { 'fennel' },
     go = { 'golangcilint', 'revive' },
-    -- haskell = { 'hlint' },
     html = { 'tidy' },
     javascript = { 'eslint' },
     lua = { 'selene' },
@@ -368,6 +442,8 @@ vim.api.nvim_create_autocmd('BufWritePre', {
         if format_enabled then
             if vim.bo.filetype == 'python' then
                 vim.api.nvim_command('Black')
+            elseif vim.bo.filetype == 'go' then
+                require("go.format").goimport()
             else
                 vim.lsp.buf.format { async = true }
             end
@@ -378,31 +454,6 @@ vim.api.nvim_create_autocmd({ 'BufWritePost', 'BufWinEnter' }, {
     pattern = '*',
     callback = function()
         require('lint').try_lint()
-    end
-})
-
-
-local bulb = require 'nvim-lightbulb'
-local show_lightbulb = false
-map('n', '<leader>db', function()
-    if show_lightbulb then
-        bulb.update_lightbulb({ sign = { enabled = false } })
-        show_lightbulb = false
-
-        local line = vim.api.nvim_win_get_cursor(0)[1]
-        local buffer_name = vim.api.nvim_buf_get_name(0)
-        vim.fn.sign_unplace('nvim-lightbulb', { id = line, buffer = buffer_name })
-    else
-        bulb.update_lightbulb({ sign = { enabled = true } })
-        show_lightbulb = true
-    end
-end, { desc = 'Toggles code action lightbulb ' })
-vim.api.nvim_create_autocmd('CursorMoved', {
-    pattern = '*',
-    callback = function()
-        if show_lightbulb then
-            bulb.update_lightbulb()
-        end
     end
 })
 

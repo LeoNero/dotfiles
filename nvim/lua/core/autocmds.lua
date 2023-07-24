@@ -75,8 +75,8 @@ autocmd('FileType', {
     group = ag_c,
     pattern = { 'cpp', 'c' },
     callback = function()
-        vim.opt.tabstop = 4
-        vim.opt.shiftwidth = 4
+        vim.opt.tabstop = 2
+        vim.opt.shiftwidth = 2
     end
 })
 
@@ -99,6 +99,15 @@ autocmd('FileType', {
     callback = function()
         vim.opt.tabstop = 2
         vim.opt.shiftwidth = 2
+    end
+})
+autocmd({ 'BufNewFile', 'BufRead' }, {
+    group = ag_ocaml,
+    pattern = { '*.mly' },
+    callback = function()
+        print('here')
+        --[[ vim.bo.filetype = 'ocaml.menhir' ]]
+        vim.bo.filetype = 'menhir'
     end
 })
 

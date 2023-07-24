@@ -4,7 +4,7 @@ end
 
 set -g fish_greeting "Hi Leo :)"
 
-set -gx LDFLAGS "-L/opt/homebrew/opt/llvm/lib -L/Users/nerone/.idris2/lib -L/opt/homebrew/opt/llvm/lib/c++ -Wl,-rpath,/opt/homebrew/opt/llvm/lib/c++"
+set -gx LDFLAGS "-L/opt/homebrew/opt/llvm/lib/c++ -Wl,-rpath,/opt/homebrew/opt/llvm/lib/c++ -L/opt/homebrew/opt/llvm/lib -L/Users/nerone/.idris2/lib "
 set -gx CPPFLAGS "-I/opt/homebrew/opt/llvm/include"
 
 # tabtab source for packages
@@ -39,5 +39,10 @@ set --export PATH $BUN_INSTALL/bin $PATH
 set --export PATH $PATH /opt/homebrew/bin/
 
 set -gx WASMTIME_HOME "$HOME/.wasmtime"
+set -gx RUSTC_WRAPPER "/opt/homebrew/bin/sccache"
 
 string match -r ".wasmtime" "$PATH" > /dev/null; or set -gx PATH "$WASMTIME_HOME/bin" $PATH
+
+# Wasmer
+export WASMER_DIR="/Users/nerone/.wasmer"
+[ -s "$WASMER_DIR/wasmer.sh" ] && source "$WASMER_DIR/wasmer.sh"

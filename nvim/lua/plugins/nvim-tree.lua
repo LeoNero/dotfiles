@@ -1,4 +1,5 @@
 local tree = require('nvim-tree')
+local tree_api = require('nvim-tree.api')
 
 tree.setup {
     open_on_tab = true,
@@ -21,7 +22,7 @@ tree.setup {
 }
 
 vim.keymap.set('n', '<leader>2', function()
-    tree.toggle(false, true)
+    tree_api.tree.toggle()
 end, {desc='Open/Close file tree'})
 
 vim.keymap.set('n', '<leader>r', function()
