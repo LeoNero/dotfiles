@@ -20,13 +20,6 @@ set -q GHCUP_INSTALL_BASE_PREFIX[1]; or set GHCUP_INSTALL_BASE_PREFIX $HOME ; se
 set -gx PNPM_HOME "/Users/nerone/Library/pnpm"
 set -gx PATH "$PNPM_HOME" $PATH
 # pnpm end
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-if test -f /Users/nerone/opt/miniconda3/bin/conda
-    eval /Users/nerone/opt/miniconda3/bin/conda "shell.fish" "hook" $argv | source
-end
-# <<< conda initialize <<<
-
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/Users/nerone/Downloads/google-cloud-sdk/path.fish.inc' ]; . '/Users/nerone/Downloads/google-cloud-sdk/path.fish.inc'; end
@@ -46,3 +39,18 @@ string match -r ".wasmtime" "$PATH" > /dev/null; or set -gx PATH "$WASMTIME_HOME
 # Wasmer
 export WASMER_DIR="/Users/nerone/.wasmer"
 [ -s "$WASMER_DIR/wasmer.sh" ] && source "$WASMER_DIR/wasmer.sh"
+
+# Nix
+any-nix-shell fish --info-right | source
+
+# >>> coursier install directory >>>
+set -gx PATH "$PATH:/Users/nerone/Library/Application Support/Coursier/bin"
+# <<< coursier install directory <<<
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+if test -f /Volumes/WD_BLACK/conda/miniconda3/bin/conda
+    eval /Volumes/WD_BLACK/conda/miniconda3/bin/conda "shell.fish" "hook" $argv | source
+end
+# <<< conda initialize <<<
+

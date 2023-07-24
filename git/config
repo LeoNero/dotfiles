@@ -1,12 +1,14 @@
 [user]
 	email = leofnerone@proton.me
 	name = Leonardo Nerone
+	signingkey = 508A37BA0F9821C2A9B3E0EA86C8B18AAFBB238D!
 [core]
 	editor = nvim
 	excludesfile = /Users/nerone/.config/git/.gitignore_global
 	autocrlf = input
 [commit]
 	template = /Users/nerone/.config/git/.gitmessage.txt
+	gpgsign = true
 [fetch]
 	prune = true
 [init]
@@ -15,8 +17,22 @@
 	cm = commit
 	i = init
 	cl = clone
+	st = status
+	br = branch
+	last = log -1 HEAD
+	unstage = reset HEAD --
+	visual = !gitk
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+[diff]
+    tool = nvimdiff
+[sendemail]
+	annotate = yes
+	verify = off
+[rerere]
+	enabled = true
+[merge]
+	tool = nvimdiff
